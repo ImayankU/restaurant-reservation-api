@@ -9,6 +9,7 @@ export const errorMiddleware = (err, req, res, next) => {
   err.message = err.message || "Internal Server Error";
   err.statusCode = err.statusCode || 500;
 
+
   if (err.name === "CastError") {
     const message = `Resource not found. Invalid: ${err.path}`;
     err = new ErrorHandler(message, 400);
@@ -16,7 +17,7 @@ export const errorMiddleware = (err, req, res, next) => {
 
 
   if (err.name === 'ValidationError') {
-    const validationErrors = Object.values(error.errors).map(err => err.message);
+    const validationErrors = Object.values(err.errors).map(error => error.message);
     return next(new ErrorHandler(validationErrors.join(', '), 400));
   }
 
